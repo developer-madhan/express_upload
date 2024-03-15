@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import React, { useState, useRef } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { Container, Col, Row, Button } from "react-bootstrap";
 
 function ProfileImageUpload() {
   const [file, setFile] = useState(null);
@@ -13,21 +14,21 @@ function ProfileImageUpload() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('profileImage', file);
+    formData.append("profileImage", file);
 
     try {
-      await axios.post('http://localhost:5000/upload', formData, {
+      await axios.post("http://localhost:5000/upload", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
-      console.log('File uploaded successfully');
+      console.log("File uploaded successfully");
       Swal.fire({
         // position: "top-end",
         icon: "success",
         title: "Your work has been saved",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
 
       // Clear file input field after successful submission
@@ -37,27 +38,33 @@ function ProfileImageUpload() {
         fileInputRef.current.value = null;
       }
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error("Error uploading file:", error);
       Swal.fire({
         icon: "error",
-        title: "Oops..."+ error,
-        text: "Something went wrong!",        
+        title: "Oops..." + error,
+        text: "Something went wrong!",
       });
     }
   };
 
   return (
     <div>
-      <h2>Upload Profile Image</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          ref={fileInputRef}
-        />
-        <button type="submit">Upload</button>
-      </form>
+      <Container>
+        <h2 className="text-center my-3">Upload Profile Image</h2>
+        <Row>
+          <Col lg={6} className="m-auto">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                ref={fileInputRef}
+              />
+              <Button type="submit"> Upload</Button>
+            </form>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
