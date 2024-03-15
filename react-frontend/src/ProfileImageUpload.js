@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 function ProfileImageUpload() {
   const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -28,7 +29,13 @@ function ProfileImageUpload() {
         showConfirmButton: false,
         timer: 1500
       });
-      
+
+      // Clear file input field after successful submission
+      setFile(null);
+      // Reset the file input field to allow uploading the same file again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
     } catch (error) {
       console.error('Error uploading file:', error);
       Swal.fire({
@@ -43,7 +50,12 @@ function ProfileImageUpload() {
     <div>
       <h2>Upload Profile Image</h2>
       <form onSubmit={handleSubmit}>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          ref={fileInputRef}
+        />
         <button type="submit">Upload</button>
       </form>
     </div>
@@ -51,4 +63,3 @@ function ProfileImageUpload() {
 }
 
 export default ProfileImageUpload;
-
