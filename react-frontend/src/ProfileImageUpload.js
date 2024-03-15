@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function ProfileImageUpload() {
   const [file, setFile] = useState(null);
@@ -20,8 +21,21 @@ function ProfileImageUpload() {
         }
       });
       console.log('File uploaded successfully');
+      Swal.fire({
+        // position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      
     } catch (error) {
       console.error('Error uploading file:', error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops..."+ error,
+        text: "Something went wrong!",        
+      });
     }
   };
 
